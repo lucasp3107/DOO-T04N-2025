@@ -1,0 +1,156 @@
+public class Endereco {
+    String estado, cidade, bairro, numero, complemento;
+
+    public Endereco(String estado, String cidade, String bairro, String numero, String complemento) {
+        this.estado = estado;
+        this.cidade = cidade;
+        this.bairro = bairro;
+        this.numero = numero;
+        this.complemento = complemento;
+    }
+
+    public void apresentarLogradouro() {
+        System.out.println("Endereço: " + ruaCompleta());
+    }
+
+    public String ruaCompleta() {
+        return bairro + ", Nº: " + numero + ", " + complemento + " - " + cidade + "/" + estado;
+    }
+}
+ Gerente.java
+
+import java.util.ArrayList;
+
+public class Gerente {
+    String nome;
+    int idade;
+    String loja;
+    Endereco endereco;
+    double salarioBase;
+    ArrayList<Double> salarioRecebido;
+
+    public Gerente(String nome, int idade, String loja, Endereco endereco, double salarioBase) {
+        this.nome = nome;
+        this.idade = idade;
+        this.loja = loja;
+        this.endereco = endereco;
+        this.salarioBase = salarioBase;
+        this.salarioRecebido = new ArrayList<>();
+        salarioRecebido.add(5000.0);
+        salarioRecebido.add(5200.0);
+        salarioRecebido.add(5100.0);
+    }
+
+    public void apresentarse() {
+        System.out.println("Gerente: " + nome + ", Idade: " + idade + ", Loja: " + loja);
+    }
+
+    public double calcularMedia() {
+        return salarioRecebido.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+    }
+
+    public double calcularBonus() {
+        return salarioBase * 0.35;
+    }
+}
+ Item.java
+
+public class Item {
+    int id;
+    String nome, tipo;
+    double valor;
+
+    public Item(int id, String nome, String tipo, double valor) {
+        this.id = id;
+        this.nome = nome;
+        this.tipo = tipo;
+        this.valor = valor;
+    }
+
+    public void gerarDescricao() {
+        System.out.println("Item ID: " + id + ", Nome: " + nome + ", Tipo: " + tipo + ", Valor: R$" + valor);
+    }
+}
+ Pedido.java
+
+import java.util.ArrayList;
+import java.util.Date;
+
+public class Pedido {
+    int id;
+    Date dataCriacao, dataPagamento, dataVencimentoReserva;
+    Cliente cliente;
+    Vendedor vendedor;
+    String loja;
+    ArrayList<Item> itens;
+
+    public Pedido(int id, Date dataCriacao, Date dataPagamento, Date dataVencimentoReserva,
+                  Cliente cliente, Vendedor vendedor, String loja, ArrayList<Item> itens) {
+        this.id = id;
+        this.dataCriacao = dataCriacao;
+        this.dataPagamento = dataPagamento;
+        this.dataVencimentoReserva = dataVencimentoReserva;
+        this.cliente = cliente;
+        this.vendedor = vendedor;
+        this.loja = loja;
+        this.itens = itens;
+    }
+
+    public double calcularValorTotal() {
+        return itens.stream().mapToDouble(item -> item.valor).sum();
+    }
+
+    public void gerarDescricaoVenda() {
+        System.out.println("Pedido criado em: " + dataCriacao + " | Valor Total: R$" + calcularValorTotal());
+    }
+}
+ ProcessaPedido.java
+
+import java.util.ArrayList;
+import java.util.Date;
+
+public class ProcessaPedido {
+
+    public Pedido processar(int id, Date dataCriacao, Date dataPagamento, Date dataVencimentoReserva,
+                            Cliente cliente, Vendedor vendedor, String loja, ArrayList<Item> itens) {
+        if (!confirmarPagamento(dataVencimentoReserva)) {
+            System.out.println("Reserva vencida. Pagamento não confirmado.");
+            return null;
+        }
+        return new Pedido(id, dataCriacao, dataPagamento, dataVencimentoReserva, cliente, vendedor, loja, itens);
+    }
+
+    private boolean confirmarPagamento(Date dataVencimentoReserva) {
+        Date hoje = new Date();
+        return hoje.before(dataVencimentoReserva) || hoje.equals(dataVencimentoReserva);
+    }
+}
+Main.java
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Bem-vindo ao sistema My Plant");
+        System.out.println("1 - Criar Pedido");
+        int opcao = scanner.nextInt();
+
+        if (opcao == 1) {
+            // Dados fake
+            Cliente cliente = new Cliente("Ana", new Endereco("SP", "São Paulo", "Centro", "123", "Apto 101"));
+            Vendedor vendedor = new Vendedor("Carlos", new Endereco("SP", "São Paulo", "Jardins", "321", "Loja 2"));
+
+            ArrayList<Item> itens = new ArrayList<>();
+            itens.add(new Item(1, "Vaso", "Decoração", 50.0));
+            itens.add(new Item(2, "Planta", "Ornamental", 120.0));
+
+            ProcessaPedido processa = new ProcessaPedido();
+            Pedido pedido = processa.processar(101, new Date(), new Date(), new Date(System.currentTimeMillis() + 86400000),
+                                               cliente, vendedor, "Loja Verde", itens);
+            if (pedido != null) {
+                pedido.gerarDescricaoVenda();
+            }
+        }
+    }
+}
