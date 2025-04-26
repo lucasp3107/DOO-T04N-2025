@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class prova {
+public class sistema {
 
     private static List<cliente> clientes = new ArrayList<>();
     private static List<evento> eventos = new ArrayList<>();
