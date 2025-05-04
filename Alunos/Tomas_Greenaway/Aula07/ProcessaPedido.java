@@ -8,7 +8,6 @@ public class ProcessaPedido {
 
         Pedido pedido = new Pedido(id, hoje, null, vencimento, cliente, vendedor, loja);
 
-        // Adicionando itens fakes
         pedido.adicionarItem(new Item(1, "Camiseta", "Roupa", 59.90));
         pedido.adicionarItem(new Item(2, "Tênis", "Calçado", 199.90));
 

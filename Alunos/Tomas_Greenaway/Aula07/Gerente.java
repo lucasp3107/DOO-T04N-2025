@@ -15,7 +15,6 @@ public class Gerente {
         this.salarioBase = salarioBase;
         this.endereco = endereco;
 
-        // Iniciando salários com três valores fixos
         salarioRecebido = new ArrayList<>();
         salarioRecebido.add(3000.00);
         salarioRecebido.add(3100.00);
