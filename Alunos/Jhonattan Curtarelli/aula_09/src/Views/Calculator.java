@@ -23,7 +23,7 @@ public class Calculator {
     private JButton btnMult;
     private JButton btnSub;
     private JButton btnDiv;
-    private Double MAX_VALUE = 1.000000;
+    private Double MAX_VALUE = 1_000_000.0;
     public Calculator() {
         frame = new JFrame("Calculadora");
         pnlBase = new JPanel();
