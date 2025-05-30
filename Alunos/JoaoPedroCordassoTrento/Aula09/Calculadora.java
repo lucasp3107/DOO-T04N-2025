@@ -38,7 +38,7 @@ public class Calculadora {
                         case "+": resultado = n1 + n2; break;
                         case "-": resultado = n1 - n2; break;
                         case "*": resultado = n1 * n2; break;
-                        case "/": resultado = n2 / n2; break;
+                        case "/": resultado = n1 / n2; break;
                     }
                     if((n1 == 0 || n2 == 0) & op == "/") {
                         JOptionPane.showMessageDialog(frame,
