@@ -6,7 +6,7 @@ import java.net.URL;
 public class Main {
     public static void main(String[] args) {
         String cidade = "Sao Paulo";
-        String apiKey = "GUHMUNNGCCZG9EBNJ93TDKUVA" + //
+        String apiKey = "aqui não tico tico" + //
                         ""; 
         try {
             String endpoint = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
