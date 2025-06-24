@@ -131,8 +131,7 @@ public class Main {
             if (list.isEmpty()) {
                 System.out.println("Esta lista está vazia.");
             } else {
-                // --- INÍCIO DA ALTERAÇÃO ---
-                // Mostra a lista numerada para permitir a remoção
+              
                 for (int i = 0; i < list.size(); i++) {
                     System.out.printf("%d. %s\n", i + 1, list.get(i));
                 }
@@ -143,7 +142,7 @@ public class Main {
                 if (remOpt > 0 && remOpt <= list.size()) {
                     Show showToRemove = list.get(remOpt - 1);
                     
-                    // Remove da lista correta baseado na opção inicial (opt)
+                    
                     switch (opt) {
                         case 1: user.removeFavorite(showToRemove); break;
                         case 2: user.removeWatched(showToRemove); break;
@@ -151,7 +150,7 @@ public class Main {
                     }
                     System.out.println("'" + showToRemove.getName() + "' foi removido(a) da lista.");
                 }
-                // --- FIM DA ALTERAÇÃO ---
+                
             }
 
         } catch (NumberFormatException e) {
