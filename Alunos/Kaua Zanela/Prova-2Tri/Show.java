@@ -76,8 +76,7 @@ public class Show {
 
     @Override
     public String toString() {
-        // --- INÍCIO DA ALTERAÇÃO ---
-        // Constrói a parte da data de forma inteligente
+   
         String datePart;
         if (premiered != null) {
             String startYear = String.valueOf(premiered.getYear());
@@ -87,17 +86,17 @@ public class Show {
             datePart = "(Data desconhecida)";
         }
 
-        // Constrói a parte dos gêneros
+    
         String genresPart = "";
         if (genres != null && !genres.isEmpty()) {
             genresPart = " | Gêneros: " + String.join(", ", genres);
         }
 
-        // Constrói a parte da nota
+       
         String ratingPart = (rating > 0) ? String.format(" | Nota: %.1f", rating) : "";
 
         return String.format("%s %s%s%s", name, datePart, genresPart, ratingPart);
-        // --- FIM DA ALTERAÇÃO ---
+       
     }
 
     @Override
