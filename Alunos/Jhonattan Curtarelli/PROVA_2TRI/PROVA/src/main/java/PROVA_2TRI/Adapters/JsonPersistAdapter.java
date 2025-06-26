@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class JsonPersistAdapter implements IPersist {
-    private static final String FILE_PATH = "src/main/java/com/TrabalhoOOP/Data/series.json";
+    private static final String FILE_PATH = "src/main/java/PROVA_2TRI/Data/series.json";
 
     public JsonPersistAdapter() {
     }
