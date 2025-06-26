@@ -45,11 +45,23 @@ public class SerieController {
         return filteredSeries;
     }
 
-    public List<Serie> orderSeries(List<Serie> seriesToOrder, Boolean alphabet) {
+    public List<Serie> orderSeries(List<Serie> seriesToOrder, Boolean alphabet, Boolean idioma, Boolean Nota, Boolean status, Boolean data) {
         Comparator<Serie> comparator = Comparator.comparing(n -> 0);
 
         if (alphabet) {
             comparator = comparator.thenComparing(Serie::getName);
+        }
+        if (idioma) {
+            comparator = comparator.thenComparing(serie -> serie.type);
+        }
+        if (Nota) {
+            comparator = comparator.thenComparing(serie -> serie.rate);
+        }
+        if (status) {
+            comparator = comparator.thenComparing(serie -> serie.status);
+        }
+        if (data) {
+            comparator = comparator.thenComparing(serie -> serie.premiereDate);
         }
 
         return seriesToOrder.stream()
@@ -227,7 +239,52 @@ public class SerieController {
             listOrderSeries();
             return;
         }
-        List<Serie> orderedSeries = orderSeries(seriesToOrder, alphabet);
+        System.out.println("Deseja ordenar por idioma? (S/N): ");
+        String idiomaOption = sc.nextLine();
+        boolean idioma = false;
+        if (idiomaOption.equalsIgnoreCase("S")) {
+            idioma = true;
+        } else if (!idiomaOption.equalsIgnoreCase("N")) {
+            System.out.println("Opção inválida, tente novamente.");
+            listOrderSeries();
+            return;
+        }
+
+        System.out.println("Deseja ordenar por nota? (S/N): ");
+        String notaOption = sc.nextLine();
+        boolean Nota = false;
+        if (notaOption.equalsIgnoreCase("S")) {
+            Nota = true;
+        } else if (!notaOption.equalsIgnoreCase("N")) {
+            System.out.println("Opção inválida, tente novamente.");
+            listOrderSeries();
+            return;
+        }
+
+        System.out.println("Deseja ordenar por status? (S/N): ");
+        String statusOption = sc.nextLine();
+        boolean status = false;
+        if (statusOption.equalsIgnoreCase("S")) {
+            status = true;
+        } else if (!statusOption.equalsIgnoreCase("N")) {
+            System.out.println("Opção inválida, tente novamente.");
+            listOrderSeries();
+            return;
+        }
+
+        System.out.println("Deseja ordenar por data de lançamento? (S/N): ");
+        String dataOption = sc.nextLine();
+        boolean data = false;
+        if (dataOption.equalsIgnoreCase("S")) {
+            data = true;
+        } else if (!dataOption.equalsIgnoreCase("N")) {
+            System.out.println("Opção inválida, tente novamente.");
+            listOrderSeries();
+            return;
+        }
+
+
+        List<Serie> orderedSeries = orderSeries(seriesToOrder, alphabet, idioma, Nota, status, data);
         listSeries(orderedSeries);
     }
 }

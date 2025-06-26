@@ -10,7 +10,7 @@ public class Serie {
     public String type;
     public List<String> genres;
     public double rate;
-    public String state;
+    public String status;
     public LocalDate premiereDate;
     public LocalDate endDate;
     public String broadCasterNote;
@@ -18,13 +18,13 @@ public class Serie {
         return id;
     }
 
-    public Serie(int id, String name, String type, List<String> genres, double rate, String state, LocalDate premiereDate, LocalDate endDate, String broadCasterNote) {
+    public Serie(int id, String name, String type, List<String> genres, double rate, String status, LocalDate premiereDate, LocalDate endDate, String broadCasterNote) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.genres = genres;
         this.rate = rate;
-        this.state = state;
+        this.status = status;
         this.premiereDate = premiereDate;
         this.endDate = endDate;
         this.broadCasterNote = broadCasterNote;
@@ -43,7 +43,7 @@ public class Serie {
                 ", type='" + type + '\'' +
                 ", genres=" + genres +
                 ", rate=" + rate +
-                ", state='" + state + '\'' +
+                ", status='" + status + '\'' +
                 ", premiereDate=" + premiereDate +
                 ", endDate=" + endDate +
                 ", broadCasterNote='" + broadCasterNote + '\'' +

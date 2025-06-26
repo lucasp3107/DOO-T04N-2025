@@ -18,8 +18,7 @@ public class SerieMapper {
                 (List<String>) data.get("genres"),
                 ratingMap != null && ratingMap.get("average") != null ?
                         ((Number) ratingMap.get("average")).doubleValue() : 0.0,
-                networkMap != null && networkMap.get("country") != null ?
-                        (String) ((Map<String, Object>) networkMap.get("country")).get("name") : "",
+                (String) data.get("status"),
                 data.get("premiered") != null ? LocalDate.parse((String) data.get("premiered")) : null,
                 data.get("ended") != null ? LocalDate.parse((String) data.get("ended")) : null,
                 (String) data.get("summary")
