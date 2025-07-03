@@ -1,0 +1,43 @@
+package tvtracker.service;
+
+import com.google.gson.*;
+import tvtracker.model.Serie;
+
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
+
+public class TvMazeAPIService {
+    public Serie buscarSeriePorNome(String nome) throws Exception {
+        String urlStr = "https://api.tvmaze.com/singlesearch/shows?q=" + nome.replace(" ", "+");
+        URL url = new URL(urlStr);
+        HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+        conexao.setRequestMethod("GET");
+
+        if (conexao.getResponseCode() != 200) {
+            throw new RuntimeException("Erro ao buscar série");
+        }
+
+        JsonObject json = JsonParser.parseReader(new InputStreamReader(conexao.getInputStream())).getAsJsonObject();
+
+        Serie serie = new Serie();
+        serie.setId(json.get("id").getAsInt());
+        serie.setNome(json.get("name").getAsString());
+        serie.setIdioma(json.get("language").getAsString());
+        serie.setNota(json.get("rating").getAsJsonObject().get("average").getAsDouble());
+        serie.setStatus(json.get("status").getAsString());
+        serie.setDataEstreia(json.get("premiered").getAsString());
+        serie.setDataFim(json.has("ended") && !json.get("ended").isJsonNull() ? json.get("ended").getAsString() : "N/A");
+        serie.setEmissora(json.has("network") && !json.get("network").isJsonNull() ?
+            json.get("network").getAsJsonObject().get("name").getAsString() : "Desconhecida");
+
+        List<String> generos = new ArrayList<>();
+        for (JsonElement genero : json.get("genres").getAsJsonArray()) {
+            generos.add(genero.getAsString());
+        }
+        serie.setGeneros(generos);
+
+        return serie;
+    }
+}

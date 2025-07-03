@@ -1,0 +1,78 @@
+package tvtracker;
+
+import tvtracker.model.*;
+import tvtracker.service.*;
+import tvtracker.util.*;
+
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        Usuario usuario = JsonUtil.carregar();
+        if (usuario == null) {
+            String nome = InputUtil.lerTexto("Digite seu nome/apelido: ");
+            usuario = new Usuario(nome);
+        }
+
+        TvMazeAPIService api = new TvMazeAPIService();
+        SerieService servico = new SerieService();
+
+        while (true) {
+            System.out.println("""
+                \n--- Menu ---
+                1. Buscar série
+                2. Ver listas
+                3. Salvar e sair
+            """);
+            int opcao = InputUtil.lerInteiro("Escolha: ");
+            InputUtil.lerTexto(""); // limpa buffer
+
+            switch (opcao) {
+                case 1 -> {
+                    String nomeSerie = InputUtil.lerTexto("Nome da série: ");
+                    try {
+                        Serie serie = api.buscarSeriePorNome(nomeSerie);
+                        System.out.println("Série encontrada: " + serie.getNome());
+                        System.out.println("Adicionar a: (favoritas / assistidas / desejo / nenhuma)");
+                        String destino = InputUtil.lerTexto("Lista: ");
+                        if (!destino.equals("nenhuma")) {
+                            servico.adicionarSerie(usuario, serie, destino);
+                            System.out.println("Adicionada!");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Erro ao buscar série.");
+                    }
+                }
+                case 2 -> {
+                    System.out.println("""
+                        Qual lista deseja ver?
+                        1. Favoritas
+                        2. Assistidas
+                        3. Desejo assistir
+                    """);
+                    int escolha = InputUtil.lerInteiro("Escolha: ");
+                    List<Serie> lista = switch (escolha) {
+                        case 1 -> usuario.getFavoritas();
+                        case 2 -> usuario.getAssistidas();
+                        case 3 -> usuario.getDesejoAssistir();
+                        default -> null;
+                    };
+
+                    if (lista != null) {
+                        String criterio = InputUtil.lerTexto("Ordenar por (nome / nota / status / data): ");
+                        List<Serie> ordenada = servico.ordenar(lista, criterio);
+                        for (Serie s : ordenada) {
+                            System.out.println("📺 " + s.getNome() + " (" + s.getStatus() + ")");
+                        }
+                    }
+                }
+                case 3 -> {
+                    JsonUtil.salvar(usuario);
+                    System.out.println("Dados salvos.");
+                    return;
+                }
+                default -> System.out.println("Opção inválida.");
+            }
+        }
+    }
+}

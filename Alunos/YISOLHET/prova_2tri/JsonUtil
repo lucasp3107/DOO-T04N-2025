@@ -1,0 +1,29 @@
+package tvtracker.util;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import tvtracker.model.Usuario;
+
+import java.io.*;
+
+public class JsonUtil {
+    private static final String ARQUIVO = "usuario.json";
+
+    public static void salvar(Usuario usuario) {
+        try (Writer writer = new FileWriter(ARQUIVO)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(usuario, writer);
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar dados.");
+        }
+    }
+
+    public static Usuario carregar() {
+        try (Reader reader = new FileReader(ARQUIVO)) {
+            Gson gson = new Gson();
+            return gson.fromJson(reader, Usuario.class);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+}
