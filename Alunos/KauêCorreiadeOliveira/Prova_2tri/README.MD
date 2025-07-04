@@ -1,0 +1,1 @@
+execute o .bat para rodar o código
