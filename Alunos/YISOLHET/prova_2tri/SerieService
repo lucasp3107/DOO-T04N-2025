@@ -1,0 +1,38 @@
+package tvtracker.service;
+
+import tvtracker.model.Serie;
+import tvtracker.model.Usuario;
+
+import java.util.*;
+
+public class SerieService {
+
+    public void adicionarSerie(Usuario usuario, Serie serie, String lista) {
+        switch (lista) {
+            case "favoritas" -> usuario.getFavoritas().add(serie);
+            case "assistidas" -> usuario.getAssistidas().add(serie);
+            case "desejo" -> usuario.getDesejoAssistir().add(serie);
+        }
+    }
+
+    public void removerSerie(Usuario usuario, int idSerie, String lista) {
+        List<Serie> listaAlvo = switch (lista) {
+            case "favoritas" -> usuario.getFavoritas();
+            case "assistidas" -> usuario.getAssistidas();
+            case "desejo" -> usuario.getDesejoAssistir();
+            default -> new ArrayList<>();
+        };
+
+        listaAlvo.removeIf(serie -> serie.getId() == idSerie);
+    }
+
+    public List<Serie> ordenar(List<Serie> lista, String criterio) {
+        return switch (criterio) {
+            case "nome" -> lista.stream().sorted(Comparator.comparing(Serie::getNome)).toList();
+            case "nota" -> lista.stream().sorted(Comparator.comparing(Serie::getNota).reversed()).toList();
+            case "status" -> lista.stream().sorted(Comparator.comparing(Serie::getStatus)).toList();
+            case "data" -> lista.stream().sorted(Comparator.comparing(Serie::getDataEstreia)).toList();
+            default -> lista;
+        };
+    }
+}
